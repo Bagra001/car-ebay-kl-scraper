@@ -5,12 +5,8 @@ import de.bagra.carwebcrawler.runnable.CrawlerTaskExecutor
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.scheduling.TaskScheduler
 import org.springframework.stereotype.Service
-import java.time.Duration
 import java.time.Instant
 import java.util.concurrent.ScheduledFuture
-
-
-
 
 
 @Service
@@ -29,7 +25,7 @@ class CrawlerService {
     }
 
     fun stopCrawling(): Boolean {
-        var stopped: Boolean = false;
+        var stopped = false
         if (taskState != null) {
             taskState?.cancel(false)
             stopped = true
@@ -38,7 +34,7 @@ class CrawlerService {
     }
 
     fun stopForceCrawling(): Boolean {
-        var stopped: Boolean = false;
+        var stopped = false
         if (taskState != null) {
             taskState?.cancel(true)
             stopped = true

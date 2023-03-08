@@ -6,7 +6,6 @@ import com.vaadin.flow.component.html.Label
 import com.vaadin.flow.component.textfield.NumberField
 import de.bagra.carwebcrawler.vaadin.model.FromToPriceModel
 
-
 class PriceFromToField(fromText: String, toText: String): CustomField<FromToPriceModel>() {
 
     private var priceFromNumberField: NumberField = NumberField(fromText)
