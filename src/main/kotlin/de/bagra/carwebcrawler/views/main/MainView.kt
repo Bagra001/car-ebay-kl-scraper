@@ -11,11 +11,13 @@ import com.vaadin.flow.component.icon.Icon
 import com.vaadin.flow.component.icon.VaadinIcon
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout
 import com.vaadin.flow.component.orderedlayout.VerticalLayout
+import com.vaadin.flow.component.progressbar.ProgressBar
 import com.vaadin.flow.component.textfield.NumberField
 import com.vaadin.flow.component.textfield.TextField
 import com.vaadin.flow.data.binder.Binder
 import com.vaadin.flow.data.validator.RangeValidator
 import com.vaadin.flow.router.Route
+import de.bagra.carwebcrawler.service.CrawlerService
 import de.bagra.carwebcrawler.vaadin.component.PriceFromToField
 import de.bagra.carwebcrawler.vaadin.component.validator.PriceFromToValidator
 import de.bagra.carwebcrawler.vaadin.model.CrawlerData
@@ -30,7 +32,9 @@ import java.util.stream.IntStream
 //TODO notification wenn daten geladen oder crawler gestartet (vllt ein Label was läuft solange der Crawler-Task läuft?)
 //TODO Grid hinzufügen
 @Route
-class MainView : VerticalLayout() {
+class MainView(crawlerService: CrawlerService) : VerticalLayout() {
+
+    private lateinit var crawlerService: CrawlerService
 
     private var binder = Binder(CrawlerData::class.java)
 
@@ -38,18 +42,32 @@ class MainView : VerticalLayout() {
     private lateinit var modelTextField: TextField
     private lateinit var erstZulassungDatePicker: ComboBox<Any?>
     private lateinit var psNumberField: NumberField
+    private lateinit var stopCrawelButton: Button
+    private lateinit var progressBar: ProgressBar
     
     private var crawlerData: CrawlerData? = CrawlerData()
     
     init {
+        this.crawlerService = crawlerService
         add(
+            progressBar(),
             H1("Crawler Properties"),
             createFirstLine(),
-            HorizontalLayout(crawlButton(), loadCrawledDataButton()),
+            HorizontalLayout(crawlButton(), stopCrawlerButton(), loadCrawledDataButton()),
             Hr()
         )
-
         initBinder()
+    }
+
+    private fun progressBar(): ProgressBar {
+        progressBar = ProgressBar()
+        progressBar.isIndeterminate = false
+        progressBar.isVisible = false
+
+        val progressBarLabel = Div()
+        progressBarLabel.text = "Crawling..."
+
+        return progressBar
     }
     
     private fun createFirstLine(): HorizontalLayout {
@@ -75,8 +93,24 @@ class MainView : VerticalLayout() {
         crawlButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_SUCCESS)
         crawlButton.icon = Icon(VaadinIcon.PLAY)
         crawlButton.isIconAfterText = true
-        crawlButton.addClickListener { binder.writeBeanIfValid(crawlerData); println(crawlerData)}
+        crawlButton.addClickListener {
+            binder.writeBeanIfValid(crawlerData);
+            var scheduledFuture = this.crawlerService.startCrawling()
+            //TODO when finished stop progressbar
+            stopCrawelButton.isEnabled = true
+            progressBar.isVisible = true
+        }
         return crawlButton
+    }
+
+    private fun stopCrawlerButton(): Button {
+        stopCrawelButton = Button(Icon(VaadinIcon.STOP))
+        stopCrawelButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY, ButtonVariant.LUMO_ERROR)
+        stopCrawelButton.addClickListener {
+            this.crawlerService.stopForceCrawling();
+        }
+        stopCrawelButton.isEnabled = false
+        return stopCrawelButton
     }
 
     private fun loadCrawledDataButton(): Button {

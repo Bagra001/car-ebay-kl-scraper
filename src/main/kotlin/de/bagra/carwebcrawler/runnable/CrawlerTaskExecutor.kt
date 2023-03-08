@@ -16,8 +16,10 @@ class CrawlerTaskExecutor(val crawlerStatistics: CrawlerStatistics): Runnable {
 
     //TODO werte variable machen pries{vonPreis}::{bisPreis}, marke model ez usw in db speichern
     var urlsToCrawl: MutableMap<String, List<String>> = mutableMapOf(Pair("https://www.ebay-kleinanzeigen.de", 
-        listOf("/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/ford-transit/k0c216+autos.ez_i:2018%2C+autos.power_i:101%2C", "/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/fiat-ducato/k0c216+autos.ez_i:2018%2C+autos.power_i:101%2C",
-            "/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/peugeot-boxer/k0c216+autos.ez_i:2018%2C+autos.power_i:101%2C", "/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/citroen-jumper/k0c216+autos.ez_i:2018%2C+autos.power_i:101%2C")))
+        listOf("/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/ford-transit/k0c216+autos.ez_i:2018,+autos.power_i:101,",
+            "/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/fiat-ducato/k0c216+autos.ez_i:2018,+autos.power_i:101,",
+            "/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/peugeot-boxer/k0c216+autos.ez_i:2018,+autos.power_i:101,",
+            "/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/citroen-jumper/k0c216+autos.ez_i:2018,+autos.power_i:101,")))
     
     companion object {
         private val log: Logger = LoggerFactory.getLogger(this::class.java)
