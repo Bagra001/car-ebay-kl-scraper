@@ -1,0 +1,41 @@
+html {
+    --lumo-font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans", "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed", "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue", Helvetica, Arial, sans-serif;
+    --lumo-border-radius: 0.5em;
+}
+
+[theme~="dark"] {
+    --lumo-primary-text-color: rgb(136, 114, 58);
+    --lumo-primary-color-50pct: rgba(136, 114, 58, 0.5);
+    --lumo-primary-color-10pct: rgba(136, 114, 58, 0.1);
+    --lumo-primary-color: hsl(43, 40%, 38%);
+    --lumo-base-color: hsl(214, 18%, 10%);
+    --lumo-shade-5pct: rgba(137, 116, 52, 0.05);
+    --lumo-shade-10pct: rgba(137, 116, 52, 0.1);
+    --lumo-shade-20pct: rgba(137, 116, 52, 0.2);
+    --lumo-shade-30pct: rgba(137, 116, 52, 0.3);
+    --lumo-shade-40pct: rgba(137, 116, 52, 0.4);
+    --lumo-shade-50pct: rgba(137, 116, 52, 0.5);
+    --lumo-shade-60pct: rgba(137, 116, 52, 0.6);
+    --lumo-shade-70pct: rgba(137, 116, 52, 0.7);
+    --lumo-shade-80pct: rgba(137, 116, 52, 0.8);
+    --lumo-shade-90pct: rgba(137, 116, 52, 0.9);
+    --lumo-shade: hsl(45, 45%, 37%);
+    --lumo-tint-5pct: rgba(149, 150, 151, 0.05);
+    --lumo-tint-10pct: rgba(149, 150, 151, 0.1);
+    --lumo-tint-20pct: rgba(149, 150, 151, 0.2);
+    --lumo-tint-30pct: rgba(149, 150, 151, 0.3);
+    --lumo-tint-40pct: rgba(149, 150, 151, 0.4);
+    --lumo-tint-50pct: rgba(149, 150, 151, 0.5);
+    --lumo-tint-60pct: rgba(149, 150, 151, 0.6);
+    --lumo-tint-70pct: rgba(149, 150, 151, 0.7);
+    --lumo-tint-80pct: rgba(149, 150, 151, 0.8);
+    --lumo-tint-90pct: rgba(149, 150, 151, 0.9);
+    --lumo-tint: hsl(214, 1%, 59%);
+    --lumo-error-text-color: rgb(224, 11, 0);
+    --lumo-error-color-50pct: rgba(224, 11, 0, 0.5);
+    --lumo-error-color-10pct: rgba(224, 11, 0, 0.1);
+    --lumo-error-color: hsl(3, 100%, 44%);
+    --lumo-error-contrast-color: #000000;
+    --lumo-primary-contrast-color: #000000;
+    --lumo-success-contrast-color: #000000;
+}
