@@ -132,7 +132,7 @@ class MainView(crawlerService: CrawlerService) : VerticalLayout() {
     private fun eZYears(): List<Int> {
         val now: LocalDate = LocalDate.now(ZoneId.systemDefault())
         return IntStream
-            .range(now.getYear() - 30, now.getYear() + 1).boxed().sorted(Collections.reverseOrder())
+            .range(now.year - 30, now.year + 1).boxed().sorted(Collections.reverseOrder())
             .collect(Collectors.toList())
     }
 
@@ -163,7 +163,7 @@ class MainView(crawlerService: CrawlerService) : VerticalLayout() {
         val closeButton = Button(Icon("lumo", "cross"))
         closeButton.addThemeVariants(ButtonVariant.LUMO_TERTIARY_INLINE)
         closeButton.element.setAttribute("aria-label", "Close")
-        closeButton.addClickListener { event: ClickEvent<Button?>? -> notification.close() }
+        closeButton.addClickListener { notification.close() }
 
         val layout = HorizontalLayout(text, closeButton)
         layout.alignItems = FlexComponent.Alignment.CENTER
