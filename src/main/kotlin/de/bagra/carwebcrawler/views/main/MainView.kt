@@ -35,7 +35,7 @@ import java.util.stream.IntStream
 @Route
 class MainView(crawlerService: CrawlerService) : VerticalLayout() {
 
-    private lateinit var crawlerService: CrawlerService
+    private var crawlerService: CrawlerService
 
     private var binder = Binder(CrawlerData::class.java)
 
