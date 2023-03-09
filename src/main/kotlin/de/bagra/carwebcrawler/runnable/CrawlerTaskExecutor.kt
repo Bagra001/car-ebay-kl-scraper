@@ -14,37 +14,36 @@ import java.time.LocalDateTime
 
 class CrawlerTaskExecutor(val crawlerStatistics: CrawlerStatistics): Runnable {
 
-    //TODO werte variable machen pries{vonPreis}::{bisPreis}, marke model ez usw in db speichern
-    var urlsToCrawl: MutableMap<String, List<String>> = mutableMapOf(Pair("https://www.ebay-kleinanzeigen.de", 
-        listOf("/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/ford-transit/k0c216+autos.ez_i:2018,+autos.power_i:101,",
-            "/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/fiat-ducato/k0c216+autos.ez_i:2018,+autos.power_i:101,",
-            "/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/peugeot-boxer/k0c216+autos.ez_i:2018,+autos.power_i:101,",
-            "/s-autos/anzeige:angebote/preis::20000/seite:{seitenID}/citroen-jumper/k0c216+autos.ez_i:2018,+autos.power_i:101,")))
     
     companion object {
         private val log: Logger = LoggerFactory.getLogger(this::class.java)
     }
     
     override fun run() {
+        crawlerStatistics.done = false
+        crawlerStatistics.interrupt = false
         crawlerStatistics.startDateTime = LocalDateTime.now()
         loadLog()
-        for (url: String in urlsToCrawl.keys) {
+        for (url: String in crawlerStatistics.urlsToCrawl.keys) {
             crawlerStatistics.runs++
-            while (!crawlerStatistics.done) {
+            while (!crawlerStatistics.done && !crawlerStatistics.interrupt) {
                 crawl(url)
             }
         }
         log.info("#################################################################################################")
-        log.info("Crawl-runs {} - total articles {} - total new article {} - ", crawlerStatistics.runs, crawlerStatistics.crawledArticles, crawlerStatistics.crawledArtilceNumber)
+        log.info("Crawl-runs {} - total articles {} - total new article {} - ", crawlerStatistics.runs, crawlerStatistics.crawledArticles.size, crawlerStatistics.crawledArtilceNumber)
     }
 
     private fun crawl(url: String) {
-        for (path: String in urlsToCrawl[url]!!) {
-            while (crawlerStatistics.lastResponseStatusCode != 404) {
+        for (path: String in crawlerStatistics.urlsToCrawl[url]!!) {
+            while (crawlerStatistics.lastResponseStatusCode != 404 && !crawlerStatistics.interrupt) {
                 val doc: Document? = connectAndParseResponse(url, path)
                 if (doc != null) {
                     val articles: Elements = doc.select("article")
                     for (article: Element in articles) {
+                        if(crawlerStatistics.interrupt) {
+                            return
+                        }
                         if (!alreadyLoaded(article)) {
                             writeLog(article)
                             val doc2: Document = openArticle(url + article.attr("data-href"))
@@ -54,6 +53,9 @@ class CrawlerTaskExecutor(val crawlerStatistics: CrawlerStatistics): Runnable {
                     crawlerStatistics.crawledSites++
                     log.info("site {} crawled - new article crawled {}", crawlerStatistics.crawledSites, crawlerStatistics.crawledArtilceNumber)
                 }
+            }
+            if(crawlerStatistics.interrupt) {
+               return
             }
         }
     }

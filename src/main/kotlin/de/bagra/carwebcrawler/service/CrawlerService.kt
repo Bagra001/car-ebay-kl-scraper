@@ -2,45 +2,28 @@ package de.bagra.carwebcrawler.service
 
 import de.bagra.carwebcrawler.runnable.CrawlerStatistics
 import de.bagra.carwebcrawler.runnable.CrawlerTaskExecutor
-import org.springframework.beans.factory.annotation.Autowired
-import org.springframework.scheduling.TaskScheduler
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler
 import org.springframework.stereotype.Service
-import java.time.Instant
-import java.util.concurrent.ScheduledFuture
+import org.springframework.util.concurrent.ListenableFuture
 
 
 @Service
-class CrawlerService {
+class CrawlerService(val crawlerStatistics: CrawlerStatistics, val taskScheduler: ThreadPoolTaskScheduler) {
 
-    @Autowired
-    private lateinit var taskScheduler: ThreadPoolTaskScheduler
 
-    @Autowired
-    private lateinit var crawlerStatistics: CrawlerStatistics
+    private lateinit var taskState: ListenableFuture<*>
 
-    private var taskState: ScheduledFuture<*>? = null
-    
-    fun startCrawling(): ScheduledFuture<*>? {
-        taskState = taskScheduler.schedule(CrawlerTaskExecutor(crawlerStatistics), Instant.now())
-        return taskState
+    fun startCrawling() {
+        taskState = taskScheduler.submitListenable(CrawlerTaskExecutor(crawlerStatistics))
     }
 
-    fun stopCrawling(): Boolean {
-        var stopped = false
+    fun stopForceCrawling() {
         if (taskState != null && !taskState!!.isDone) {
-            taskState?.cancel(false)
-            stopped = true
+            crawlerStatistics.interrupt = true
         }
-        return stopped
     }
 
-    fun stopForceCrawling(): Boolean {
-        var stopped = false
-        if (taskState != null && !taskState!!.isDone) {
-            taskState?.cancel(true)
-            stopped = true
-        }
-        return stopped
+    fun getResult(): String {
+        return "Crawl-runs ${crawlerStatistics.runs} - total articles ${crawlerStatistics.crawledArticles.size} - total new article ${crawlerStatistics.crawledArtilceNumber}"
     }
 }

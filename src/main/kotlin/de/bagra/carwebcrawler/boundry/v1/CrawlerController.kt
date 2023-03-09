@@ -13,18 +13,14 @@ class CrawlerController {
     private lateinit var crawlerService: CrawlerService
     
     @PostMapping("/crawler/start")
-    fun startCrawler(): ResponseEntity<String> {
+    fun startCrawler(): ResponseEntity<Void> {
         crawlerService.startCrawling()
-        return ResponseEntity.ok("id")
+        return ResponseEntity.ok().build()
     }
 
     @PostMapping("/crawler/stop")
-    fun stopCrawler(): ResponseEntity<Boolean> {
-        return ResponseEntity.ok(crawlerService.stopCrawling())
-    }
-
-    @PostMapping("/crawler/stop/force")
-    fun stopForceCrawler(): ResponseEntity<Boolean> {
-        return ResponseEntity.ok(crawlerService.stopForceCrawling())
+    fun stopForceCrawler(): ResponseEntity<Void> {
+        crawlerService.stopForceCrawling()
+        return ResponseEntity.ok().build()
     }
 }
