@@ -57,6 +57,9 @@ jobs:
         # Prefix the list here with "+" to use these queries and those in the config file.
         # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         queries: security-extended,security-and-quality
+        with:
+          # skipping build cache is needed so that all modules will be analyzed
+          arguments: assemble --no-build-cache
 
     - name: Gradle Build
       uses: gradle/gradle-build-action@v2
