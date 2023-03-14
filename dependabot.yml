@@ -1,0 +1,22 @@
+version: 2
+updates:
+  - package-ecosystem: "gradle"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "[Gradle] "
+    labels:
+      - "gradle"
+      - "deps"
+    target-branch: "master"
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "[NPM] "
+    labels:
+      - "npm"
+      - "deps"
+    target-branch: "master"
