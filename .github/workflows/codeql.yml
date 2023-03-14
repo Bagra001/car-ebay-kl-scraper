@@ -58,11 +58,11 @@ jobs:
         # Details on CodeQL's query packs refer to : https://docs.github.com/en/code-security/code-scanning/automatically-scanning-your-code-for-vulnerabilities-and-errors/configuring-code-scanning#using-queries-in-ql-packs
         queries: security-extended,security-and-quality
 
+    - name: Permission on gradlew
+      run:
+
     - name: Gradle Build
       uses: gradle/gradle-build-action@v2
-      with:
-        # skipping build cache is needed so that all modules will be analyzed
-        arguments: assemble --no-build-cache
 
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v2
