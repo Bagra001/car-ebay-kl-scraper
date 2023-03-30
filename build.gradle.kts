@@ -5,6 +5,7 @@ plugins {
     id("io.spring.dependency-management")
     kotlin("jvm")
     kotlin("plugin.spring")
+    kotlin("plugin.jpa")
     id("com.vaadin")
 }
 
@@ -28,6 +29,12 @@ dependencyManagement {
 
 configurations.implementation {
     exclude("ch.qos.logback", "logback-classic")
+}
+
+allOpen {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.Embeddable")
+    annotation("jakarta.persistence.MappedSuperclass")
 }
 
 dependencies {
@@ -60,6 +67,8 @@ dependencies {
     // kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
 
     // test
     testImplementation("org.springframework.boot:spring-boot-starter-test")
