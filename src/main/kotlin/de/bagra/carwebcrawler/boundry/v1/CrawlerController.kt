@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RestController
+import java.util.concurrent.CancellationException
 
 @RestController
 class CrawlerController {
@@ -20,7 +21,11 @@ class CrawlerController {
 
     @PostMapping("/crawler/stop")
     fun stopForceCrawler(): ResponseEntity<Void> {
-        crawlerService.stopForceCrawling()
+        try {
+            crawlerService.stopForceCrawling()
+        } catch (ex: CancellationException) {
+            return ResponseEntity.ok().build()
+        }
         return ResponseEntity.ok().build()
     }
 }
