@@ -1,5 +1,6 @@
 package de.bagra.carwebcrawler.runnable
 
+import de.bagra.carwebcrawler.repository.CrawlerDataRepository
 import org.jsoup.Connection.Response
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
@@ -12,7 +13,7 @@ import java.nio.file.Path
 import java.nio.file.StandardOpenOption
 import java.time.LocalDateTime
 
-class CrawlerTaskExecutor(val crawlerStatistics: CrawlerStatistics): Runnable {
+class CrawlerTaskExecutor(val crawlerStatistics: CrawlerStatistics, val crawlerDataRepository: CrawlerDataRepository): Runnable {
 
     
     companion object {
@@ -87,9 +88,12 @@ class CrawlerTaskExecutor(val crawlerStatistics: CrawlerStatistics): Runnable {
             }
         }
     }
-    
+
     private fun writeLog(article: Element) {
         val path: Path = Path.of("crawledArticles.txt")
+        if(path != null && Files.notExists(path)) {
+            Files.createFile(path);
+        }
         val stringBuilder: StringBuilder = java.lang.StringBuilder()
         stringBuilder.append(article.attr("data-adid"))
         stringBuilder.append(",")
