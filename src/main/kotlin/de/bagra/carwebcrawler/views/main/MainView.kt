@@ -1,6 +1,5 @@
 package de.bagra.carwebcrawler.views.main
 
-import com.vaadin.flow.component.ClickEvent
 import com.vaadin.flow.component.Text
 import com.vaadin.flow.component.Unit
 import com.vaadin.flow.component.button.Button
@@ -26,7 +25,7 @@ import de.bagra.carwebcrawler.service.CrawlerService
 import de.bagra.carwebcrawler.util.LogUtil
 import de.bagra.carwebcrawler.vaadin.component.PriceFromToField
 import de.bagra.carwebcrawler.vaadin.component.validator.PriceFromToValidator
-import de.bagra.carwebcrawler.vaadin.model.CrawlerData
+import de.bagra.carwebcrawler.vaadin.model.CrawlerDataFilter
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.*
@@ -41,7 +40,7 @@ class MainView(crawlerService: CrawlerService, logUtil: LogUtil) : VerticalLayou
     private var crawlerService: CrawlerService
     private var logUtil: LogUtil
 
-    private var binder = Binder(CrawlerData::class.java)
+    private var binder = Binder(CrawlerDataFilter::class.java)
 
     private lateinit var priceFromToField: PriceFromToField
     private lateinit var modelTextField: TextField
@@ -52,7 +51,7 @@ class MainView(crawlerService: CrawlerService, logUtil: LogUtil) : VerticalLayou
     private lateinit var progressBar: ProgressBar
     private lateinit var progressBarLayout: VerticalLayout
     
-    private var crawlerData: CrawlerData? = CrawlerData()
+    private var crawlerData: CrawlerDataFilter? = CrawlerDataFilter()
     
     init {
         this.crawlerService = crawlerService
