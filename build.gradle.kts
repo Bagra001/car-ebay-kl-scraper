@@ -29,14 +29,46 @@ configurations.implementation {
     exclude("ch.qos.logback", "logback-classic")
 }
 
+allOpen {
+    annotation("jakarta.persistence.Entity")
+    annotation("jakarta.persistence.Embeddable")
+    annotation("jakarta.persistence.MappedSuperclass")
+}
+
 dependencies {
-    implementation("org.slf4j:slf4j-simple:2.0.7")
-    implementation("org.slf4j:slf4j-api:2.0.7")
+    val slf4jVersion: String by project
+    val jsoupVersion: String by project
+    val jakartaVersion: String by project
+    val h2Version: String by project
+
+    // slf4j
+    implementation("org.slf4j:slf4j-simple:$slf4jVersion")
+    implementation("org.slf4j:slf4j-api:$slf4jVersion")
+
+    // vaadin
     implementation("com.vaadin:vaadin-spring-boot-starter")
+
+    // spring
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
+
+    // jsoup
+    implementation("org.jsoup:jsoup:$jsoupVersion")
+
+    compileOnly("jakarta.servlet:jakarta.servlet-api:$jakartaVersion")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+
+    // database
+    implementation("com.h2database:h2:$h2Version")
+    implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+
+    // kotlin
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
+
+    // test
     implementation("org.jsoup:jsoup:1.16.1")
     compileOnly("jakarta.servlet:jakarta.servlet-api:6.0.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
