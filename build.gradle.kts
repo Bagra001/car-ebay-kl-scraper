@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("org.springframework.boot") version "3.0.6"
+    id("org.springframework.boot") version "3.1.0"
     id("io.spring.dependency-management") version "1.1.0"
-    kotlin("jvm") version "1.8.20"
-    kotlin("plugin.spring") version "1.8.20"
-    id("com.vaadin") version "24.0.4"
+    kotlin("jvm") version "1.9.0"
+    kotlin("plugin.spring") version "1.8.22"
+    id("com.vaadin") version "24.1.0"
 }
 
 group = "de.bagra"
@@ -69,6 +69,9 @@ dependencies {
     implementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
 
     // test
+    implementation("org.jsoup:jsoup:1.16.1")
+    compileOnly("jakarta.servlet:jakarta.servlet-api:6.0.0")
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
