@@ -13,12 +13,14 @@ import java.time.LocalDate
 @Table(name = "CRAWLERDATA")
 data class CrawlerDataEntity(@EmbeddedId val id: CrawlerDataId,
                              @Column(name = "url", length = 255) val url: String,
-                             @Lob @Column(name = "img", columnDefinition="BLOB") val img: ByteArray,
+                             @Lob @Column(name = "img", columnDefinition="BLOB") val img: ByteArray?,
                              @Column(name ="model") val model: String,
                              @Column(name = "vintage") val vintage: LocalDate,
                              @Column(name = "ps") val ps: Int,
                              @Convert(attributeName = "equipment", converter = JsonToMapConverter::class)  @Column(name = "equipment", columnDefinition = "json") val equipment: HashMap<String, String>,
                              @Column(name = "price", length = 15) val price: String) {
+
+
     override fun equals(other: Any?): Boolean {
         if (this === other) return true
         if (other !is CrawlerDataEntity) return false

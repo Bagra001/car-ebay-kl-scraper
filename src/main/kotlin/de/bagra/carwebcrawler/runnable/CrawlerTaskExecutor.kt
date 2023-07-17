@@ -1,5 +1,7 @@
 package de.bagra.carwebcrawler.runnable
 
+import de.bagra.carwebcrawler.entity.CrawlerDataEntity
+import de.bagra.carwebcrawler.entity.CrawlerDataId
 import de.bagra.carwebcrawler.repository.CrawlerDataRepository
 import org.jsoup.Connection.Response
 import org.jsoup.Jsoup
@@ -11,7 +13,9 @@ import org.slf4j.LoggerFactory
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.StandardOpenOption
+import java.time.LocalDate
 import java.time.LocalDateTime
+
 
 class CrawlerTaskExecutor(val crawlerStatistics: CrawlerStatistics, val crawlerDataRepository: CrawlerDataRepository): Runnable {
 
@@ -47,7 +51,8 @@ class CrawlerTaskExecutor(val crawlerStatistics: CrawlerStatistics, val crawlerD
                         }
                         if (!alreadyLoaded(article)) {
                             writeLog(article)
-                            val doc2: Document = openArticle(url + article.attr("data-href"))
+                            val articleDoc: Document = openArticle(url + article.attr("data-href"))
+                            saveArticle(articleDoc, article.attr("data-adid"))
                             crawlerStatistics.crawledArtilceNumber++
                         }
                     }
@@ -60,7 +65,29 @@ class CrawlerTaskExecutor(val crawlerStatistics: CrawlerStatistics, val crawlerD
             }
         }
     }
-    
+
+    private fun saveArticle(articleDoc: Document, articleId: String) {
+        val articleElement: Element = articleDoc.body()
+        articleElement.getElementsByClass("boxedarticle--title")
+        val modellElement: Element? = articleElement.select("li.addetailslist--detail:contains(Modell)").first()
+        val modell: String = modellElement?.select("span.addetailslist--detail--value")?.text() ?: ""
+        val crawlerDataEntity: CrawlerDataEntity = CrawlerDataEntity(
+            CrawlerDataId(null, articleId),
+            articleDoc.location(), loadImg(articleElement), modell, LocalDate.now(), 1, hashMapOf(), ""
+        )
+        crawlerDataRepository.save(crawlerDataEntity)
+    }
+
+    private fun loadImg(articleElement: Element): ByteArray? {
+        var imgByteArray: ByteArray? = null
+        val img: Element? = articleElement.select("img#viewad-image").first()
+        if (img != null) {
+            val imgUrl : String = img.absUrl("src");
+            imgByteArray = Jsoup.connect(imgUrl).ignoreContentType(true).execute().bodyAsBytes()
+        }
+        return imgByteArray
+    }
+
     private fun connectAndParseResponse(url: String, path: String): Document? {
         val pathWithPageNumber: String = path.replace("{seitenID}", (crawlerStatistics.crawledSites + 1).toString())
         val response: Response = Jsoup.connect(url + pathWithPageNumber).execute()
@@ -106,7 +133,7 @@ class CrawlerTaskExecutor(val crawlerStatistics: CrawlerStatistics, val crawlerD
         var alreadyLoaded = false
         val articleIid: String = article.attr("data-adid")
         val articleIUri: String = article.attr("data-href")
-        if (!crawlerStatistics.crawledArticles.isEmpty() &&  crawlerStatistics.crawledArticles.containsKey(articleIid) && crawlerStatistics.crawledArticles[articleIid].equals(articleIUri)) {
+        if (crawlerStatistics.crawledArticles.isNotEmpty() &&  crawlerStatistics.crawledArticles.containsKey(articleIid) && crawlerStatistics.crawledArticles[articleIid].equals(articleIUri)) {
             alreadyLoaded = true
             log.info("the article {} - {} was already loaded", articleIid, articleIUri)
         }
