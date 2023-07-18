@@ -15,8 +15,12 @@ data class CrawlerDataEntity(@EmbeddedId val id: CrawlerDataId,
                              @Column(name = "url", length = 255) val url: String,
                              @Lob @Column(name = "img", columnDefinition="BLOB") val img: ByteArray?,
                              @Column(name ="model") val model: String,
+                             @Column(name ="engine") val engine: String,
                              @Column(name = "vintage") val vintage: LocalDate,
+                             @Column(name = "tuev") val tuev: LocalDate,
+                             @Column(name = "euro") val euro: String,
                              @Column(name = "ps") val ps: Int,
+                             @Column(name = "km") val km: Int,
                              @Convert(attributeName = "equipment", converter = JsonToMapConverter::class)  @Column(name = "equipment", columnDefinition = "json") val equipment: HashMap<String, String>,
                              @Column(name = "price", length = 15) val price: String) {
 
