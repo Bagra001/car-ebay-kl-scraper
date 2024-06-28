@@ -90,5 +90,5 @@ tasks.withType<Test> {
 // this is just an example of how to configure the Gradle Vaadin Plugin:
 // for more configuration options please see: https://vaadin.com/docs/latest/guide/start/gradle/#all-options
 vaadin {
-    optimizeBundle(true)
+    optimizeBundle(false)
 }
