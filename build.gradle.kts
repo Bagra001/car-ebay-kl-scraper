@@ -5,7 +5,7 @@ plugins {
     id("org.springframework.boot") version "3.2.3"
     kotlin("jvm") version "2.0.0"
     kotlin("plugin.spring") version "2.0.0"
-    id("com.vaadin") version "24.2.2"
+    id("com.vaadin") version "24.4.4"
 }
 
 group = "de.bagra"
