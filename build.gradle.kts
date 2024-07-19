@@ -1,9 +1,9 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    id("io.spring.dependency-management") version "1.1.4"
+    id("io.spring.dependency-management") version "1.1.5"
     id("org.springframework.boot") version "3.3.0"
-    kotlin("jvm") version "1.9.22"
+    kotlin("jvm") version "2.0.0"
     kotlin("plugin.spring") version "2.0.0"
     id("com.vaadin") version "24.2.2"
 }
@@ -66,11 +66,11 @@ dependencies {
     implementation("org.jetbrains.kotlin:kotlin-reflect")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.16.1")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
 
     // test
-    implementation("org.jsoup:jsoup:1.17.2")
-    compileOnly("jakarta.servlet:jakarta.servlet-api:6.0.0")
+    implementation("org.jsoup:jsoup:1.18.1")
+    compileOnly("jakarta.servlet:jakarta.servlet-api:6.1.0")
     developmentOnly("org.springframework.boot:spring-boot-devtools")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
