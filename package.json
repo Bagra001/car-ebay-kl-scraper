@@ -78,13 +78,13 @@
     "strip-css-comments": "5.0.0",
     "transform-ast": "2.4.4",
     "typescript": "5.1.6",
-    "vite": "4.5.2",
+    "vite": "6.4.1",
     "vite-plugin-checker": "0.6.1",
     "workbox-build": "7.0.0",
     "workbox-core": "7.0.0",
     "workbox-precaching": "7.0.0",
     "rollup-plugin-visualizer": "5.9.2",
-    "@vitejs/plugin-react": "4.0.4"
+    "@vitejs/plugin-react": "4.3.4"
   },
   "vaadin": {
     "dependencies": {
@@ -170,7 +170,7 @@
       "workbox-core": "7.0.0",
       "workbox-precaching": "7.0.0",
       "rollup-plugin-visualizer": "5.9.2",
-      "@vitejs/plugin-react": "4.0.4"
+      "@vitejs/plugin-react": "4.3.4"
     },
     "hash": "bb48853796e82d72f8f60ffdc71f044229ebe0fe3099117e9da33c7bfc2c2ff8"
   },
